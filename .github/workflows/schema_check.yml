@@ -29,11 +29,11 @@ jobs:
           event-type: run_pf_workflow
           client-payload: '{"subgraphPath": "./subgraphs/sb1.graphql"}'
 
-      - name: Wait for PF Workflow completion
+     - name: Wait for PF Workflow completion
         id: wait_for_completion
         run: |
           echo "Waiting for PF Workflow completion..."
-          while [[ "$(curl -s -H 'Accept: application/vnd.github.v3+json' -H "Authorization: Bearer ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/repos/sheikhasim/graphql-demo-PF/actions/runs/${{ steps.trigger_pf.outputs.event.data.id }}/workflow-runs | jq -r '.workflow_runs[0].status')" == "in_progress" ]]; do
+          while [[ "$(curl -s -H 'Accept: application/vnd.github.v3+json' -H "Authorization: Bearer ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/repos/sheikhasim/graphql-demo-PF/actions/workflows/<workflow-id>/runs | jq '.workflow_runs[].status' | grep -cE '^(in_progress|queued|pending)$')" -gt 0 ]]; do
             echo "Workflow is still running..."
             sleep 10
           done
