@@ -30,17 +30,18 @@ jobs:
           client-payload: '{"subgraphPath": "./subgraphs/sb1.graphql"}'
 
       - name: Wait for PF Workflow completion
-        id: wait_for_completion
-        uses: styfle/wait-for@v1
-        with:
-          job: workflow
-          ref: ${{ github.sha }}
-          repository: sheikhasim/grpahql-demo-PF
-          token: ${{ secrets.ACCESS_TOKEN }}
+              id: wait_for_completion
+              run: |
+                echo "Waiting for PF Workflow completion..."
+                while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' -H "Authorization: Bearer ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/repos/sheikhasim/graphql-demo-PF/actions/runs/${{ steps.trigger_pf.outputs['event']['data']['id'] }}/check-suite)" != "200" ]]; do
+                  echo "Workflow is still running..."
+                  sleep 10
+                done
+                echo "PF Workflow completed."
 
       - name: Check PF Workflow status
-        run: |
-          if [[ "${{ steps.wait_for_completion.outputs.conclusion }}" != "success" ]]; then
-            echo "PF Workflow failed. Exiting..."
-            exit 1
-          fi
+              run: |
+                if [[ "$(curl -s -H "Authorization: Bearer ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/repos/sheikhasim/graphql-demo-PF/actions/runs/${{ steps.trigger_pf.outputs['event']['data']['id'] }}/check-suite | jq -r .conclusion)" != "success" ]]; then
+                  echo "PF Workflow failed. Exiting..."
+                  exit 1
+                fi
