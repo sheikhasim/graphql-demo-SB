@@ -29,7 +29,7 @@ jobs:
           event-type: run_pf_workflow
           client-payload: '{"subgraphPath": "./subgraphs/sb1.graphql"}'
 
-     - name: Wait for PF Workflow completion
+      - name: Wait for PF Workflow completion
         id: wait_for_completion
         run: |
           echo "Waiting for PF Workflow completion..."
