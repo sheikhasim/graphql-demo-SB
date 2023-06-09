@@ -28,3 +28,19 @@ jobs:
           repository: sheikhasim/graphql-demo-PF
           event-type: run_pf_workflow
           client-payload: '{"subgraphPath": "./subgraphs/sb1.graphql"}'
+
+      - name: Wait for PF Workflow completion
+        id: wait_for_completion
+        uses: styfle/wait-for@v1
+        with:
+          job: workflow
+          ref: ${{ github.sha }}
+          repository: sheikhasim/grpahql-demo-PF
+          token: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: Check PF Workflow status
+        run: |
+          if [[ "${{ steps.wait_for_completion.outputs.conclusion }}" != "success" ]]; then
+            echo "PF Workflow failed. Exiting..."
+            exit 1
+          fi
