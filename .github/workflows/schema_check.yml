@@ -3,7 +3,7 @@ name: Trigger PF-schema check workflow
 on:
   push:
     paths:
-      - './subgraphs/sb1.graphql'
+      - 'subgraphs/sb1.graphql'
 
 jobs:
   trigger_pf_workflow:
