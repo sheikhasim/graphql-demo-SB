@@ -32,7 +32,7 @@ jobs:
         run: |
           echo "Waiting for PF Workflow completion..."
           while true; do
-            workflow_runs=$(curl -s -H 'Accept: application/vnd.github.v3+json' -H "Authorization: Bearer ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/repos/sheikhasim/graphql-demo-PF/actions/runs/${{ steps.trigger_pf.outputs.event.id }}/runs)
+            workflow_runs=$(curl -s -H 'Accept: application/vnd.github.v3+json' -H "Authorization: Bearer ${{ secrets.ACCESS_TOKEN }}" "https://api.github.com/repos/sheikhasim/graphql-demo-PF/actions/runs/${{ steps.trigger_pf.outputs.event.id }}/runs")
             workflow_count=$(echo "$workflow_runs" | jq -r '. | length')
 
             if [[ $workflow_count -eq 0 ]]; then
@@ -40,17 +40,24 @@ jobs:
               sleep 10
             else
               workflow_status=$(echo "$workflow_runs" | jq -r '.[0].status')
-              echo "Workflow status: $workflow_status"
 
               if [[ "$workflow_status" == "completed" ]]; then
-                break
+                conclusion=$(echo "$workflow_runs" | jq -r '.[0].conclusion')
+                if [[ "$conclusion" == "success" ]]; then
+                  break
+                else
+                  echo "PF Workflow failed. Exiting..."
+                  exit 1
+                fi
               fi
+              echo "Workflow status: $workflow_status"
             fi
 
             sleep 10
           done
 
           echo "PF Workflow completed."
+
 
 
 
