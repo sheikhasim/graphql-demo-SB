@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'subgraphs/sb1.graphql'
+  workflow_dispatch:
 
 jobs:
   trigger_pf_workflow:
