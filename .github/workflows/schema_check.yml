@@ -24,6 +24,7 @@ jobs:
         id: return_dispatch
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
+          ref: main
           repo: graphql-demo-PF
           owner: sheikhasim
           workflow: schema_check.yml
