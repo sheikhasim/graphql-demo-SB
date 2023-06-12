@@ -9,6 +9,5 @@ type User {
   address: String!
   contact: String!
   gender: String!
-  to:String!
   
 }
