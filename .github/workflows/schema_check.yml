@@ -18,26 +18,22 @@ jobs:
         with:
           node-version: 14
 
-      - name: Trigger PF Workflow
-        id: trigger_pf
-        uses: Codex-/return-dispatch@v1
+
+      - name: Dispatch an action and get the run ID
+        uses: codex-/return-dispatch@v1
+        id: return_dispatch
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
-          repo: sheikhasim/graphql-demo-PF
+          repo: graphql-demo-PF
+          owner: sheikhasim
           workflow: schema_check.yml
-          workflow_inputs: |
-            subgraphPath=./subgraphs/sb1.graphql
 
-      - name: Wait for PF Workflow completion
-        id: wait_for_completion
-        uses: Codex-/return-dispatch@v1
+      - name: Await Run ID ${{ steps.return_dispatch.outputs.run_id }}
+        uses: Codex-/await-remote-run@v1.0.0
         with:
-          token: ${{ secrets.ACCESS_TOKEN }}
-          run_id: ${{ steps.trigger_pf.outputs.run_id }}
-
-      - name: Check PF Workflow status
-        run: |
-          if [[ "${{ steps.wait_for_completion.outputs.conclusion }}" != "success" ]]; then
-            echo "PF Workflow failed. Exiting..."
-            exit 1
-          fi
+          token: ${{secrets.ACCESS_TOKEN}}}
+          repo: return-dispatch
+          owner: codex-
+          run_id: ${{ steps.return_dispatch.outputs.run_id }}
+          run_timeout_seconds: 300 # Optional
+          poll_interval_ms: 5000 # Optional
