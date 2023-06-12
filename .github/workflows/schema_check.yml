@@ -21,8 +21,8 @@ jobs:
 
 
       - name: Dispatch an action and get the run ID
-        uses: codex-/return-dispatch@v1
         id: return_dispatch
+        uses: codex-/return-dispatch@v1
         with:
           token: ${{ secrets.PAT}}
           ref: ${{ github.ref }}
@@ -30,7 +30,7 @@ jobs:
           owner: sheikhasim
           workflow: schema_check.yml
          #workflow_inputs : subgraphs:subgraphs/sb1.graphql
-         
+
       - name: Await Run ID ${{ steps.return_dispatch.outputs.run_id }}
         uses: Codex-/await-remote-run@v1.0.0
         with:
