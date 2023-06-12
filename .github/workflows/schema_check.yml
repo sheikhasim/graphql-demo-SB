@@ -36,6 +36,8 @@ jobs:
             sleep 10
           done
 
+          sleep 10
+
           workflow_status=""
           while [[ "$workflow_status" != "completed" ]]; do
             workflow_status=$(curl -s -H 'Accept: application/vnd.github.v3+json' -H "Authorization: Bearer ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/repos/sheikhasim/graphql-demo-PF/actions/runs/${{ steps.trigger_pf.outputs.event.id }}/runs | jq -r '.workflow_runs[0].status')
