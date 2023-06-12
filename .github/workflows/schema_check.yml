@@ -27,7 +27,7 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_ROLE }}
           role-session-name: GitHub-OIDC
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: ap-south-1
           mask-aws-account-id: true
 
       - name: Trigger and wait
