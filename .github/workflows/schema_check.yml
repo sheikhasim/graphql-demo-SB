@@ -1,7 +1,7 @@
 name: Trigger PF-schema check workflow
 
 on:
-  push:
+  pull_request:
     paths:
       - 'subgraphs/sb1.graphql'
   workflow_dispatch:
