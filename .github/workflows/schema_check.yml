@@ -36,11 +36,18 @@ jobs:
             sleep 10
           done
 
-          while [[ "$(curl -s -H 'Accept: application/vnd.github.v3+json' -H "Authorization: Bearer ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/repos/sheikhasim/graphql-demo-PF/actions/runs/${{ steps.trigger_pf.outputs.event.id }}/runs | jq -r '.workflow_runs[].status' | grep -cE '^(in_progress|queued|pending)$')" -gt 0 ]]; do
-            echo "Workflow is still running..."
+          workflow_status=""
+          while [[ "$workflow_status" != "completed" ]]; do
+            workflow_status=$(curl -s -H 'Accept: application/vnd.github.v3+json' -H "Authorization: Bearer ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/repos/sheikhasim/graphql-demo-PF/actions/runs/${{ steps.trigger_pf.outputs.event.id }}/runs | jq -r '.workflow_runs[0].status')
+            echo "Workflow status: $workflow_status"
+            if [[ "$workflow_status" == "completed" ]]; then
+              break
+            fi
             sleep 10
           done
+
           echo "PF Workflow completed."
+
 
 
       - name: Get PF Workflow result
