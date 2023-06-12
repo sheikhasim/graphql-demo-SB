@@ -27,7 +27,7 @@ jobs:
           github_token: ${{ secrets.ACCESS_TOKEN }}
           workflow_file_name: schema_check.yml
           wait_interval: 10
-          propagate_failure: false
+          propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
 
