@@ -18,10 +18,8 @@ jobs:
         with:
           node-version: 14
 
-      #- name: Install dependencies
-        #run: npm ci
-
       - name: Trigger PF Workflow
+        id: trigger_pf
         uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
@@ -33,7 +31,7 @@ jobs:
         id: wait_for_completion
         run: |
           echo "Waiting for PF Workflow completion..."
-          while [[ "$(curl -s -H 'Accept: application/vnd.github.v3+json' -H "Authorization: Bearer ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/repos/sheikhasim/graphql-demo-PF/actions/workflows/<workflow-id>/runs | jq '.workflow_runs[].status' | grep -cE '^(in_progress|queued|pending)$')" -gt 0 ]]; do
+          while [[ "$(curl -s -H 'Accept: application/vnd.github.v3+json' -H "Authorization: Bearer ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/repos/sheikhasim/graphql-demo-PF/actions/runs/${{ steps.trigger_pf.outputs.event.data.id }}/runs | jq -r '.workflow_runs[].status' | grep -cE '^(in_progress|queued|pending)$')" -gt 0 ]]; do
             echo "Workflow is still running..."
             sleep 10
           done
