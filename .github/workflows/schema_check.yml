@@ -23,9 +23,9 @@ jobs:
         uses: Codex-/return-dispatch@v1
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
-          repository: sheikhasim/graphql-demo-PF
+          repo: sheikhasim/graphql-demo-PF
           workflow: schema_check.yml
-          inputs: |
+          workflow_inputs: |
             subgraphPath=./subgraphs/sb1.graphql
 
       - name: Wait for PF Workflow completion
