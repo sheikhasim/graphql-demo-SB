@@ -43,9 +43,9 @@ jobs:
           trigger_workflow: true
           wait_workflow: true
 
-     - name: Sync files to S3 bucket
-       run: |
-          aws s3 sync ./subgraphs s3:${{AWS_S3_BUCKET}} --delete
+      - name: Sync files to S3 bucket
+        run: |
+            aws s3 sync ./subgraphs s3:${{AWS_S3_BUCKET}} --delete
 
         
 
