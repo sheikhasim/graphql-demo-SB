@@ -31,15 +31,33 @@ jobs:
         id: wait_for_completion
         run: |
           echo "Waiting for PF Workflow completion..."
-          while [[ "$(curl -s -H 'Accept: application/vnd.github.v3+json' -H "Authorization: Bearer ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/repos/sheikhasim/graphql-demo-PF/actions/runs/${{ steps.trigger_pf.outputs.event.data.id }}/runs | jq -r '.workflow_runs[].status' | grep -cE '^(in_progress|queued|pending)$')" -gt 0 ]]; do
+          while [[ "$(curl -s -H 'Accept: application/vnd.github.v3+json' -H "Authorization: Bearer ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/repos/sheikhasim/graphql-demo-PF/actions/runs/${{ steps.trigger_pf.outputs.event.id }}/runs | jq -r '.workflow_runs[].status' | grep -cE '^(in_progress|queued|pending)$')" -gt 0 ]]; do
             echo "Workflow is still running..."
             sleep 10
           done
           echo "PF Workflow completed."
 
-      - name: Check PF Workflow status
+      - name: Get PF Workflow result
+        id: get_pf_result
         run: |
-          if [[ "$(curl -s -H 'Accept: application/vnd.github.v3+json' -H "Authorization: Bearer ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/repos/sheikhasim/graphql-demo-PF/actions/runs/${{ steps.trigger_pf.outputs.event.data.id }}/check-suites | jq -r '.check_suites[0].conclusion')" != "success" ]]; then
+          result=$(curl -s -H 'Accept: application/vnd.github.v3+json' -H "Authorization: Bearer ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/repos/sheikhasim/graphql-demo-PF/actions/runs/${{ steps.trigger_pf.outputs.event.id }}/runs)
+          conclusion=$(echo "$result" | jq -r '.workflow_runs[].conclusion')
+          if [[ "$conclusion" != "success" ]]; then
             echo "PF Workflow failed. Exiting..."
             exit 1
           fi
+
+          check_suite_result=$(echo "$result" | jq -r '.workflow_runs[].check_suite_results[0].conclusion')
+          if [[ "$check_suite_result" != "success" ]]; then
+            echo "Check suite failed. Exiting..."
+            exit 1
+          fi
+
+          # Store the result for later use
+          echo "::set-output name=result::$result"
+
+      - name: Use PF Workflow result
+        run: |
+          result=$INPUT_GET_PF_RESULT
+          # Process the result as needed
+          echo "$result"
