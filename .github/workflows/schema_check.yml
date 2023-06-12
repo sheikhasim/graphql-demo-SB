@@ -27,36 +27,37 @@ jobs:
           event-type: run_pf_workflow
           client-payload: '{"subgraphPath": "./subgraphs/sb1.graphql"}'
 
-      - name: Wait for PF Workflow completion
-        id: wait_for_completion
-        run: |
-          echo "Waiting for PF Workflow completion..."
-          while true; do
-            workflow_runs=$(curl -s -H 'Accept: application/vnd.github.v3+json' -H "Authorization: Bearer ${{ secrets.ACCESS_TOKEN }}" "https://api.github.com/repos/sheikhasim/graphql-demo-PF/actions/runs/${{ steps.trigger_pf.outputs.event.id }}/runs")
-            workflow_count=$(echo "$workflow_runs" | jq -r '. | length')
+    - name: Wait for PF Workflow completion
+      id: wait_for_completion
+      run: |
+        echo "Waiting for PF Workflow completion..."
+        while true; do
+          workflow_runs=$(curl -s -H 'Accept: application/vnd.github.v3+json' -H "Authorization: Bearer ${{ secrets.ACCESS_TOKEN }}" "https://api.github.com/repos/sheikhasim/graphql-demo-PF/actions/runs/${{ steps.trigger_pf.outputs.event.id }}/runs")
+          workflow_count=$(echo "$workflow_runs" | jq -r '. | length')
 
-            if [[ $workflow_count -eq 0 ]]; then
-              echo "Workflow is not yet started..."
-              sleep 10
-            else
-              workflow_status=$(echo "$workflow_runs" | jq -r '.[0].status')
-
-              if [[ "$workflow_status" == "completed" ]]; then
-                conclusion=$(echo "$workflow_runs" | jq -r '.[0].conclusion')
-                if [[ "$conclusion" == "success" ]]; then
-                  break
-                else
-                  echo "PF Workflow failed. Exiting..."
-                  exit 1
-                fi
-              fi
-              echo "Workflow status: $workflow_status"
-            fi
-
+          if [[ $workflow_count -eq 0 ]]; then
+            echo "Workflow is not yet started..."
             sleep 10
-          done
+          else
+            workflow_status=$(echo "$workflow_runs" | jq -r '.[0].status')
 
-          echo "PF Workflow completed."
+            if [[ "$workflow_status" == "completed" ]]; then
+              conclusion=$(echo "$workflow_runs" | jq -r '.[0].conclusion')
+              if [[ "$conclusion" == "success" ]]; then
+                break
+              else
+                echo "PF Workflow failed. Exiting..."
+                exit 1
+              fi
+            fi
+            echo "Workflow status: $workflow_status"
+          fi
+
+          sleep 10
+        done
+
+        echo "PF Workflow completed."
+
 
 
 
