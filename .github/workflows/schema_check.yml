@@ -5,13 +5,15 @@ on:
     paths:
       - 'subgraphs/sb1.graphql'
   workflow_dispatch:
+  
+permissions:
+      id-token: write # This is required for aws oidc connection
+      contents: read # This is required for actions/checkout
 
 jobs:
   trigger_pf_workflow:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write # This is required for aws oidc connection
-      contents: read # This is required for actions/checkout
+    
 
     steps:
       - name: Checkout repository
