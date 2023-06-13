@@ -1,0 +1,28 @@
+name: SB Deployment 
+on:
+   workflow_dispatch:
+
+jobs:
+  compose and publish:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Trigger and wait
+        uses: convictional/trigger-workflow-and-wait@v1.6.1
+        with:
+          owner: sheikhasim
+          repo: graphql-demo-PF
+          github_token: ${{ secrets.ACCESS_TOKEN }}
+          workflow_file_name: compose_publish_pf.yml
+          wait_interval: 10
+          propagate_failure: true
+          trigger_workflow: true
+          wait_workflow: true
