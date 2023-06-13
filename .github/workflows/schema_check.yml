@@ -28,13 +28,13 @@ jobs:
         with:
           node-version: 14
 
-      - name: Configure AWS credentials from AWS account
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          role-to-assume: ${{ secrets.AWS_ROLE }}
-          role-session-name: GitHub-OIDC
-          aws-region: ${{ secrets.AWS_REGION }}
-          mask-aws-account-id: true
+      #- name: Configure AWS credentials from AWS account
+        #uses: aws-actions/configure-aws-credentials@v2
+        #with:
+          #role-to-assume: ${{ secrets.AWS_ROLE }}
+          #role-session-name: GitHub-OIDC
+          #aws-region: ${{ secrets.AWS_REGION }}
+         # mask-aws-account-id: true
 
       - name: Trigger and wait
         id: schema_checks
@@ -49,4 +49,8 @@ jobs:
           propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
+          
+      #- name: Sync files to S3 bucket
+       # run: |
+           #aws s3 sync ./subgraphs s3://${{ secrets.AWS_S3_BUCKET }} --delete
       
