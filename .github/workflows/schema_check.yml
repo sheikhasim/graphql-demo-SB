@@ -2,8 +2,14 @@ name: Trigger PF-schema check workflow
 
 on:
   pull_request:
+    types:
+       opened
+  pull_request_target:
+    types:
+      opened
     paths:
       - 'subgraphs/sb1.graphql'
+      
   workflow_dispatch:
     inputs:
       subgraph:
