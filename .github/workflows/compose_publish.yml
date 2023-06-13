@@ -1,4 +1,4 @@
-name: SB Deployment 
+name: SB trigger compose & publish 
 on:
    workflow_dispatch:
 
