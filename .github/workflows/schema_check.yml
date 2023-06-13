@@ -44,6 +44,11 @@ jobs:
           propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
+      
+      # Step to access the schema check results from the PF workflow
+      - name: Access Schema Check Results
+        run: |
+          echo "Schema Check Results: ${{ needs.trigger_pf_workflow.outputs.schema_check_results }}"
 
       - name: Sync files to S3 bucket
         run: |
