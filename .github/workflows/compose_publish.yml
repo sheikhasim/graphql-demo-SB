@@ -3,7 +3,7 @@ on:
    workflow_dispatch:
 
 jobs:
-  compose and publish:
+  compose_publish:
     runs-on: ubuntu-latest
     
     steps:
