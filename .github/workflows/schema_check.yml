@@ -5,16 +5,20 @@ on:
     paths:
       - 'subgraphs/sb1.graphql'
   workflow_dispatch:
-  
+    inputs:
+      subgraph:
+        description: 'Path to the subgraph file'
+        required: true
+        default: ''
+
 permissions:
-      id-token: write # This is required for aws oidc connection
-      contents: read # This is required for actions/checkout
+  id-token: write # This is required for AWS OIDC connection
+  contents: read # This is required for actions/checkout
 
 jobs:
   trigger_pf_workflow:
     runs-on: ubuntu-latest
     
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -29,30 +33,23 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_ROLE }}
           role-session-name: GitHub-OIDC
-          aws-region: ap-south-1
+          aws-region: ${{ secrets.AWS_REGION }}
           mask-aws-account-id: true
 
       - name: Trigger and wait
+        id: schema_checks
         uses: convictional/trigger-workflow-and-wait@v1.6.1
         with:
           owner: sheikhasim
           repo: graphql-demo-PF
           github_token: ${{ secrets.ACCESS_TOKEN }}
           workflow_file_name: schema_check.yml
-          client_payload: '{"subgraph": "./subgraphs/sb1.graphql"}'
+          client_payload: '{"subgraph": "${{ github.event.inputs.subgraph }}"}'
           wait_interval: 10
           propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
       
-      # Step to access the schema check results from the PF workflow
       - name: Access Schema Check Results
         run: |
-          echo "Schema Check Results: ${{ needs.trigger_pf_workflow.outputs.schema_check_results }}"
-
-      - name: Sync files to S3 bucket
-        run: |
-            aws s3 sync ./subgraphs s3://${{secrets.AWS_S3_BUCKET}} --delete
-
-        
-
+          echo "Schema Check Results: ${{ needs.schema_checks.outputs.schema_check_results }}"
