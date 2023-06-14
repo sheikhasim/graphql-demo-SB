@@ -1,4 +1,4 @@
-name: SB trigger compose & publish 
+name: trigger PF compose & publish 
 on:
    workflow_dispatch:
 
