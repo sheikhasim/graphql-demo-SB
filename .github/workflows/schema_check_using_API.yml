@@ -41,7 +41,7 @@ jobs:
             echo "API is a success"
           else
             echo "API is a failure"
-            exit
+            exit 1
           fi
 
 
