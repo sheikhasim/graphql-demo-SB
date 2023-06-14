@@ -1,0 +1,47 @@
+name: Trigger API endpoint and wait for response on PR
+
+on:
+  pull_request_target:
+    types:
+      opened
+    paths:
+      - 'subgraphs/sb1.graphql'
+
+permissions:
+  id-token: write # This is required for AWS OIDC connection
+  contents: read # This is required for actions/checkout
+
+jobs:
+  trigger_api_and_wait:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Trigger API endpoint and wait
+        id: api_request
+        run: |
+          # Make the API call and store the response
+          API_RESPONSE=$(curl -X POST -H "Content-Type: application/json" -d '{"subgraph": "subgraphs/sb1.graphql"}' https://example.com/api/endpoint)
+
+          # Check the response and determine if it's successful or not
+          if [[ $API_RESPONSE == *"success"* ]]; then
+            echo "::set-output name=api_success::true"
+          else
+            echo "::set-output name=api_success::false"
+          fi
+
+      - name: Check API response
+        run: |
+          if [[ steps.api_request.outputs.api_success == "true" ]]; then
+            echo "API call successful!"
+          else
+            echo "API call failed!"
+            exit 1
+          fi
