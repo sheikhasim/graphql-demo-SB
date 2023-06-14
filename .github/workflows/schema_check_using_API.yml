@@ -44,8 +44,8 @@ jobs:
                         -H "Content-Type: application/json" \
                         -H "Authorization: Bearer ${{ secrets.ACCESS_TOKEN }}" \
                         -d '{"ref": "refs/heads/main"}' \
-                        https://api.github.com/repos/sheikhasim/graphql-demo-PF/actions/workflows/schema_check/dispatches)
-          if [[ $API_RESPONSE == *"workflow_id"* ]]; then
+                        https://api.github.com/repos/sheikhasim/graphql-demo-PF/actions/workflows/schema_check.yml/dispatches)
+          if [[ $API_RESPONSE == *"success"* ]]; then
             echo "::set-output name=api_success::true"
           else
             echo "::set-output name=api_succesteps.api_request.outputs.workflow_success == "true"ss::false"
