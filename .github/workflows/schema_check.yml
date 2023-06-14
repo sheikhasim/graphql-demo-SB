@@ -1,4 +1,4 @@
-name: Trigger PF-schema check workflow
+name: Trigger PF-schema check workflow on PR 
 
 on:
   pull_request_target:
