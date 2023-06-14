@@ -40,14 +40,18 @@ jobs:
       - name: Make API request
         id: api-request
         run: |
-          response=$(curl -s -o /dev/null -w "%{http_code}" https://i30fveepxc.execute-api.us-east-1.amazonaws.com/dev)
+          response=$(curl -s -o /dev/null -w "%{http_code}" -D - https://i30fveepxc.execute-api.us-east-1.amazonaws.com/dev)
           echo "::set-output name=response_code::$response"
+          echo "::set-output name=response_body::$(curl -s https://i30fveepxc.execute-api.us-east-1.amazonaws.com/dev)"
 
       - name: Print API status
         run: |
           response_code=${{ steps.api-request.outputs.response_code }}
+          response_body=${{ steps.api-request.outputs.response_body }}
           if [ "$response_code" -eq 200 ]; then
             echo "API is a success"
+            echo "Response body: $response_body"
           else
             echo "API is a failure"
           fi
+
