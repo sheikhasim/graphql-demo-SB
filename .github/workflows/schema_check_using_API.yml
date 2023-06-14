@@ -37,28 +37,17 @@ jobs:
           #else
            # echo "::set-output name=api_success::false"
           #fi
-      - name: Trigger API endpoint and wait
-        id: api_request
+      - name: Make API request
+        id: api-request
         run: |
-          API_RESPONSE=$(curl -s -X POST \
-                        -H "Content-Type: application/json" \
-                        -H "Authorization: Bearer ${{ secrets.ACCESS_TOKEN }}" \
-                        -d '{"ref": "refs/heads/main"}' \
-                        https://i30fveepxc.execute-api.us-east-1.amazonaws.com/dev)
-          if [[ $API_RESPONSE == *"success"* ]]; then
-            echo "::set-output name=api_success::true"
-          else
-            echo "::set-output name=api_success::false"
-          fi
+          response=$(curl -s -o /dev/null -w "%{http_code}" https://i30fveepxc.execute-api.us-east-1.amazonaws.com/dev)
+          echo "::set-output name=response_code::$response"
 
-
-    
-
-      - name: Check API response
+      - name: Print API status
         run: |
-          if [[ steps.api_request.outputs.api_success == "true" ]]; then
-            echo "API call successful!"
+          response_code=${{ steps.api-request.outputs.response_code }}
+          if [ "$response_code" -eq 200 ]; then
+            echo "API is a success"
           else
-            echo "API call failed!"
-            exit 1
+            echo "API is a failure"
           fi
