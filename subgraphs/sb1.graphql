@@ -11,6 +11,7 @@ type User {
   town: String!
   gender: String!
   ggg: String!
+  hhh: String!
   
   
 }
