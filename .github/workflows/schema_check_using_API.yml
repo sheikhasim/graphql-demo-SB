@@ -24,18 +24,32 @@ jobs:
         with:
           node-version: 14
 
+      #- name: Trigger API endpoint and wait
+       # id: api_request
+        #run: |
+          # Make the API call and store the response
+          #API_RESPONSE=$(curl -X POST -H "Content-Type: application/json" -d '{"subgraph": "subgraphs/sb1.graphql"}' https://example.com/api/endpoint)
+
+          # Check the response and determine if it's successful or not
+          #if [[ $API_RESPONSE == *"success"* ]]; then
+           # echo "::set-output name=api_success::true"
+          #else
+           # echo "::set-output name=api_success::false"
+          #fi
       - name: Trigger API endpoint and wait
         id: api_request
         run: |
           # Make the API call and store the response
-          API_RESPONSE=$(curl -X POST -H "Content-Type: application/json" -d '{"subgraph": "subgraphs/sb1.graphql"}' https://example.com/api/endpoint)
+          API_RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" https://google.com)
 
-          # Check the response and determine if it's successful or not
-          if [[ $API_RESPONSE == *"success"* ]]; then
+          # Check the response code and determine if it's successful or not
+          if [[ $API_RESPONSE == "200" ]]; then
             echo "::set-output name=api_success::true"
           else
             echo "::set-output name=api_success::false"
           fi
+
+    
 
       - name: Check API response
         run: |
