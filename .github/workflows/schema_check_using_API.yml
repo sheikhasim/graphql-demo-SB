@@ -6,6 +6,7 @@ on:
       opened
     paths:
       - 'subgraphs/sb1.graphql'
+  workflow_dispatch:
 
 permissions:
   id-token: write # This is required for AWS OIDC connection
