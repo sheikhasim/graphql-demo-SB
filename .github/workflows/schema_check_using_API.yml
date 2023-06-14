@@ -32,6 +32,7 @@ jobs:
           body=$(curl -s https://i30fveepxc.execute-api.us-east-1.amazonaws.com/dev)
           echo "::set-output name=response_code::$response"
           echo "::set-output name=response_body::$body"
+          echo "$response_code"
 
       # - name: Print API status
       #   run: |
