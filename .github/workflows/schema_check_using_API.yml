@@ -45,7 +45,7 @@ jobs:
 
 
       - name: Dummy Step
-        #if: steps.api-request.outputs.response_code == 'HTTP/2 200'
+        if: steps.api-request.outputs.response_code == 'HTTP/2 200'
         run: |
           response_code=${{ steps.api-request.outputs.response_code }}
           numeric_code=$(echo "$response_code" | awk '{split($0, a, " "); print a[2]}')
