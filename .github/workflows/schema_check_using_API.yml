@@ -46,7 +46,7 @@ jobs:
 
       - name: Dummy Step
         #if: steps.api-request.outputs.response_code == 200
-         run: |
+        run: |
           response_code=${{ steps.api-request.outputs.response_code }}
           echo "Response code: $response_code"
 
