@@ -46,8 +46,6 @@ jobs:
       - name: Dummy Step
         if: steps.api-request.outputs.response_code == '200'
         run: |
-          response_code=${{ steps.api-request.outputs.response_code }}
-          numeric_code=$(echo "$response_code" | awk '{split($0, a, " "); print a[2]}')
-          echo "Response code: $numeric_code"
+            echo "this step only runs if API call is a success"
 
 
