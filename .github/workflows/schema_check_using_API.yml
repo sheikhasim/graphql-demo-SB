@@ -38,7 +38,7 @@ jobs:
           response_code=${{ steps.api-request.outputs.response_code }}
           response_body=${{ steps.api-request.outputs.response_body }}
 
-          if [ "$response_code" -eq HTTP/2 200 ]; then
+          if [ "$response_code" -eq 'HTTP/2 200' ]; then
             echo "API is a success"
           else
             echo "API is a failure"
