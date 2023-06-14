@@ -12,6 +12,7 @@ type User {
   gender: String!
   ggg: String!
   hhh: String!
+  test: String!
   
   
 }
