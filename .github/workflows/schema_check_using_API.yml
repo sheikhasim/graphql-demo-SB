@@ -48,7 +48,7 @@ jobs:
           if [[ $API_RESPONSE == *"success"* ]]; then
             echo "::set-output name=api_success::true"
           else
-            echo "::set-output name=api_succesteps.api_request.outputs.workflow_success == "true"ss::false"
+            echo "::set-output name=api_success::false"
           fi
 
 
