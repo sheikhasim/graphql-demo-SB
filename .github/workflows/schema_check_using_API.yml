@@ -45,6 +45,8 @@ jobs:
 
 
       - name: Dummy Step
-        if: steps.api-request.outputs.response_code == 200
-        run: echo "This step executes only if API response is a success"
+        #if: steps.api-request.outputs.response_code == 200
+         run: |
+          response_code=${{ steps.api-request.outputs.response_code }}
+          echo "Response code: $response_code"
 
