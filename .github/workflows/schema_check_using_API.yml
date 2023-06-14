@@ -44,7 +44,7 @@ jobs:
                         -H "Content-Type: application/json" \
                         -H "Authorization: Bearer ${{ secrets.ACCESS_TOKEN }}" \
                         -d '{"ref": "refs/heads/main"}' \
-                        https://api.github.com/repos/sheikhasim/graphql-demo-PF/actions/workflows/schema_check.yml)
+                        https://i30fveepxc.execute-api.us-east-1.amazonaws.com/dev)
           if [[ $API_RESPONSE == *"success"* ]]; then
             echo "::set-output name=api_success::true"
           else
