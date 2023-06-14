@@ -45,6 +45,6 @@ jobs:
 
 
       - name: Dummy Step
-        if: steps.api-request.outputs.response_code == '200'
+        if: steps.api-request.outputs.response_code == 200
         run: echo "This step executes only if API response is a success"
 
