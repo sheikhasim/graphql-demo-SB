@@ -27,7 +27,7 @@ jobs:
       #- name: Trigger API endpoint and wait
        # id: api_request
         #run: |
-          # Make the API call and store the response
+          # Make the API call and store the rsteps.api_request.outputs.workflow_success == "true"esponse
           #API_RESPONSE=$(curl -X POST -H "Content-Type: application/json" -d '{"subgraph": "subgraphs/sb1.graphql"}' https://example.com/api/endpoint)
 
           # Check the response and determine if it's successful or not
@@ -39,15 +39,17 @@ jobs:
       - name: Trigger API endpoint and wait
         id: api_request
         run: |
-          # Make the API call and store the response
-          API_RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" https://google.com)
-
-          # Check the response code and determine if it's successful or not
-          if [[ $API_RESPONSE == "200" ]]; then
+          API_RESPONSE=$(curl -s -X POST \
+                        -H "Content-Type: application/json" \
+                        -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+                        -d '{"ref": "refs/heads/main"}' \
+                        https://api.github.com/repos/sheikhasim/graphql-demo-PF/actions/workflows/schema_check/dispatches)
+          if [[ $API_RESPONSE == *"workflow_id"* ]]; then
             echo "::set-output name=api_success::true"
           else
-            echo "::set-output name=api_success::false"
+            echo "::set-output name=api_succesteps.api_request.outputs.workflow_success == "true"ss::false"
           fi
+
 
     
 
