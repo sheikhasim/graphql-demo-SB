@@ -1,11 +1,7 @@
-name: Trigger schema check API endpoint and wait for response on PR
+name: Trigger compose API endpoint and wait for response on PR
 
 on:
-  pull_request_target:
-    types:
-      opened
-    paths:
-      - 'subgraphs/sb1.graphql'
+
   workflow_dispatch:
 
 permissions:
