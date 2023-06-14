@@ -10,6 +10,5 @@ type User {
   contact: String!
   town: String!
   gender: String!
-  fgjh:String
   
 }
