@@ -36,7 +36,7 @@ jobs:
       - name: Print API status
         run: |
           response_code=${{ steps.api-request.outputs.response_code }}
-          numeric_code=$(echo "$response_code" | awk '{print $2}')
+          numeric_code=${response_code#* }
           if [ "$numeric_code" -eq 200 ]; then
             echo "API is a success"
           else
