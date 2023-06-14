@@ -28,7 +28,7 @@ jobs:
       - name: Make API request
         id: api-request
         run: |
-          response=$(curl https://i30fveepxc.execute-api.us-east-1.amazonaws.com/dev)
+          response=$(curl -s -o /dev/null -w "%{http_code}" -D - https://i30fveepxc.execute-api.us-east-1.amazonaws.com/dev)
           response_body=$(curl -s https://i30fveepxc.execute-api.us-east-1.amazonaws.com/dev)
           echo "Response code: $(echo $response | awk '{print $2}')"
           echo "::set-output name=response_code::$(echo $response | awk '{print $2}')"
