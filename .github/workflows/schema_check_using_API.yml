@@ -36,12 +36,13 @@ jobs:
       - name: Print API status
         run: |
           response_code=${{ steps.api-request.outputs.response_code }}
-          response_body=${{ steps.api-request.outputs.response_body }}
-          numeric_code=$(echo "$response_code" | awk '{print $2}')
-          if [ "$numeric_code" -eq 200 ]; then
+          if [ "$response_code" -eq 200 ]; then
             echo "API is a success"
-            echo "Response body: $response_body"
           else
             echo "API is a failure"
           fi
+
+      - name: Dummy Step
+        if: ${{ steps.api-request.outputs.response_code == 'HTTP/2 200' }}
+        run: echo "This step executes only if API response is a success"
 
