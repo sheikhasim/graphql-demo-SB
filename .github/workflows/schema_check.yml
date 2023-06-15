@@ -30,10 +30,10 @@ jobs:
         id: schema_checks
         uses: convictional/trigger-workflow-and-wait@v1.6.1
         with:
-          owner: <repo-owner>
-          repo: <repo-name>
+          owner: sheikhasim
+          repo: graphql-demo-PF
           github_token: ${{ secrets.ACCESS_TOKEN }}
-          workflow_file_name: <workflow name>
+          workflow_file_name: schema_check.yml
           #client_payload: '{"subgraph": "subgraphs/sb1.graphql"}'
           wait_interval: 10
           propagate_failure: true
