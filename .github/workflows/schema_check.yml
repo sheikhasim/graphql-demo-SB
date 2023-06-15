@@ -9,8 +9,8 @@ on:
   workflow_dispatch:
 
 permissions:
-  id-token: write # This is required for AWS OIDC connection
-  contents: read # This is required for actions/checkout
+  id-token: write
+  contents: read 
 
 jobs:
   trigger_pf_workflow:
@@ -30,10 +30,10 @@ jobs:
         id: schema_checks
         uses: convictional/trigger-workflow-and-wait@v1.6.1
         with:
-          owner: sheikhasim
-          repo: graphql-demo-PF
+          owner: <repo-owner>
+          repo: <repo-name>
           github_token: ${{ secrets.ACCESS_TOKEN }}
-          workflow_file_name: schema_check.yml
+          workflow_file_name: <workflow name>
           #client_payload: '{"subgraph": "subgraphs/sb1.graphql"}'
           wait_interval: 10
           propagate_failure: true
