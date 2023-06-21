@@ -14,8 +14,8 @@ jobs:
       - name: Upload and Download File from S3
         uses: sheikhasim/s3-upload-test-action@v23.1.0
         with:
-          aws-region: ${{secrets.AWS_REGION}}
-          aws-role-arn: ${{secrets.AWS_ROLE}}
+          aws-region: 'reg1'
+          aws-role-arn: 'role1'
           file-to-upload: './subgraphs/sb1.graphql'
           s3-bucket: ${{secrets.AWS_S3_BUCKET}}
           s3-upload-key: 'schema-reg1/sb1.graphql'
