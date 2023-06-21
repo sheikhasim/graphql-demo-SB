@@ -1,0 +1,30 @@
+name: S3 custom action test
+
+on:
+ workflow_dispatch:
+
+jobs:
+  s3_file_job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Upload and Download File from S3
+        uses: sheikhasim/s3-upload-test-action@v23.1.0
+        with:
+          aws-role-arn: ${{secrets.AWS_ROLE}}
+          aws-region: 'us-east-1'
+          file-to-upload: 'path/to/local/file'
+          s3-bucket: 'your-s3-bucket-name'
+          s3-upload-key: 'uploaded-file.txt'
+          s3-download-key: 'downloaded-file.txt'
+          downloaded-file-path: 'path/to/save/downloaded-file'
+
+      - name: Display Uploaded and Downloaded File
+        run: |
+          echo "Uploaded File:"
+          cat path/to/local/file
+          echo "Downloaded File:"
+          cat path/to/save/downloaded-file
