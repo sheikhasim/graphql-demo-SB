@@ -16,15 +16,15 @@ jobs:
         with:
           aws-role-arn: ${{secrets.AWS_ROLE}}
           aws-region: ${{secrets.AWS_REGION}}
-          file-to-upload: 'schema-reg1/sb2.graphql'
+          file-to-upload: './subgraphs/sb1.graphql'
           s3-bucket: ${{secrets.AWS_S3_BUCKET}}
-          s3-upload-key: 'uploaded-file.txt'
-          s3-download-key: 'subgraphs/sb1.graphql'
-          downloaded-file-path: 'subgraphs/'
+          s3-upload-key: 'schema-reg1/sb1.graphql'
+          s3-download-key: 'schema-reg1/sb1.graphql'
+          downloaded-file-path: './subgraphs/download'
 
       - name: Display Uploaded and Downloaded File
         run: |
           echo "Uploaded File:"
-          cat path/to/local/file
+          cat ./subgraphs/upload/sb1.graphql
           echo "Downloaded File:"
-          cat path/to/save/downloaded-file
+          cat ./subgraphs/download/sb1.graphql
