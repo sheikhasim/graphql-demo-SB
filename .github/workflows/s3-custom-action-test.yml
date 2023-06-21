@@ -15,12 +15,12 @@ jobs:
         uses: sheikhasim/s3-upload-test-action@v23.1.0
         with:
           aws-role-arn: ${{secrets.AWS_ROLE}}
-          aws-region: 'us-east-1'
-          file-to-upload: 'path/to/local/file'
-          s3-bucket: 'your-s3-bucket-name'
+          aws-region: ${{secrets.AWS_REGION}}
+          file-to-upload: 'schema-reg1/sb2.graphql'
+          s3-bucket: ${{secrets.AWS_S3_BUCKET}}
           s3-upload-key: 'uploaded-file.txt'
-          s3-download-key: 'downloaded-file.txt'
-          downloaded-file-path: 'path/to/save/downloaded-file'
+          s3-download-key: 'subgraphs/sb1.graphql'
+          downloaded-file-path: 'subgraphs/'
 
       - name: Display Uploaded and Downloaded File
         run: |
