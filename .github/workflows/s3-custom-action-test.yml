@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Upload and Download File from S3
-        uses: sheikhasim/s3-upload-test-action@v23.1.0
+        uses: sheikhasim/s3-upload-test-action@v23.1.1
         with:
           aws-role-arn: "arn:aws:iam::053869304403:role/asishe-GH-role"
           aws-region: ${{secrets.AWS_REGION}}
